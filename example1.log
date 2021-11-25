@@ -1,0 +1,93 @@
+./example1.out ex.dat 
+
+ "mfb.txt" No.00 -- focused beam --
+medium density                       [kg/m^3] :            1000
+speed of sound in the medium            [m/s] :            1500
+frequency                                [Hz] :          100000
+sound pressure amplitude                 [Pa] :     10+      0I
+radius of focused transducer              [m] :           0.045
+curvature radius of the transducer        [m] :           0.072
+x-component of translation vector         [m] :               0
+y-component of translation vector         [m] :               0
+z-component of translation vector         [m] :               0
+rotation parameter theta                [rad] :               0
+rotation parameter psi                  [rad] :               0
+sampling number for Gauss-Legendre quadrature :              64
+-- additional information --
+wavelength                                [m] :           0.015
+energy passing through a plane orthogonal to the acoustic axis [W]
+                                              : 1.4965495613794e-06
+
+********** object 0 data **********
+data file name  : sph_m1_05z_md1.obj
+shift parameter : (       0,        0,        0)
+--- medium data ---
+medium data file name      = medium1.txt
+domain id  1 rho0 [kg/m^3] =     970
+             c0      [m/s] =    1004
+
+--- mesh data ---
+mesh data file name    = sphere_m1_05z.msh
+node number            =      602
+defined element number =     1200
+
+********** object 1 data **********
+data file name  : sph_m1_05z_md1.obj
+shift parameter : (       0,        0,    0.011)
+--- medium data ---
+medium data file name      = medium1.txt
+domain id  1 rho0 [kg/m^3] =     970
+             c0      [m/s] =    1004
+
+--- mesh data ---
+mesh data file name    = sphere_m1_05z.msh
+node number            =      602
+defined element number =     1200
+
+********** object 2 data **********
+data file name  : sph_m1_05z_md1.obj
+shift parameter : (       0,        0,   -0.011)
+--- medium data ---
+medium data file name      = medium1.txt
+domain id  1 rho0 [kg/m^3] =     970
+             c0      [m/s] =    1004
+
+--- mesh data ---
+mesh data file name    = sphere_m1_05z.msh
+node number            =      602
+defined element number =     1200
+
+Total electromagnetic field at r=( -0.03, 0.01, 0.002 )
+type=0 setting ( 4 point Gauss-Legendre )
+p  =  5.40712382734238e-02 +2.17811517208632e-02 I 
+v_x= -4.24009318984379e-08 +4.75203660451726e-09 I 
+v_y=  1.41330231100455e-08 -1.58421531286019e-09 I 
+v_z= -1.68795090301494e-08 +2.09719937042234e-08 I 
+Total electromagnetic field at r=( -0.03, 0.01, 0.002 )
+type=1 setting ( 9 point or 7 point Gauss-Legendre )
+p  =  5.40712919137025e-02 +2.17811202799559e-02 I 
+v_x= -4.24009420780910e-08 +4.75206545404553e-09 I 
+v_y=  1.41330434499252e-08 -1.58421457115458e-09 I 
+v_z= -1.68794576581219e-08 +2.09720022776114e-08 I 
+
+Radiation force and torque
+type=0 setting ( 4 point Gauss-Legendre ) 
+object id = 0
+F = ( 1.08591633984330e-29,-3.74708929979981e-30, 7.01412943076239e-15)
+N = ( 2.77333911991762e-32,-3.77482269099898e-32,-1.43131953738044e-32), center of rotation ( 0, 0, 0)
+object id = 1
+F = ( 3.19427036856289e-29, 2.08308582784923e-30, 6.68403936275132e-15)
+N = (-3.02371001268796e-32, 4.01748986399177e-31, 3.27704315122237e-33), center of rotation ( 0, 0, 0)
+object id = 2
+F = ( 6.31088724176809e-30,-2.54407641933776e-29, 9.66212201345738e-15)
+N = (-1.95096703366427e-31,-1.57348476456437e-31,-9.56560878970338e-33), center of rotation ( 0, 0, 0)
+type=1 setting ( 9 or 7 point Gauss-Legendre ) 
+objcet id = 0
+F = ( 1.19068692881796e-29,-3.66080763829126e-30, 7.00022085785636e-15)
+N = ( 2.59759801249228e-32,-3.94815638599383e-32,-2.29076107308584e-32), center of rotation ( 0, 0, 0)
+objcet id = 1
+F = ( 3.31444839709266e-29, 1.94750035976437e-30, 6.67423723964907e-15)
+N = (-2.82148736852730e-32, 4.09645299171165e-31,-4.51516784105647e-33), center of rotation ( 0, 0, 0)
+objcet id = 2
+F = ( 7.22300766342989e-30,-2.58351946459881e-29, 9.64981595367818e-15)
+N = (-2.02607830149537e-31,-1.66785533183935e-31,-1.99730596136917e-32), center of rotation ( 0, 0, 0)

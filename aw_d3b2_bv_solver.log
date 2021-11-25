@@ -1,0 +1,98 @@
+./aw_d3b2_bv_solver model_settings.txt ex.dat
+
+ "mfb.txt" No.00 -- focused beam --
+medium density                       [kg/m^3] :            1000
+speed of sound in the medium            [m/s] :            1500
+frequency                                [Hz] :          100000
+sound pressure amplitude                 [Pa] :     10+      0I
+radius of focused transducer              [m] :           0.045
+curvature radius of the transducer        [m] :           0.072
+x-component of translation vector         [m] :               0
+y-component of translation vector         [m] :               0
+z-component of translation vector         [m] :               0
+rotation parameter theta                [rad] :               0
+rotation parameter psi                  [rad] :               0
+sampling number for Gauss-Legendre quadrature :              64
+-- additional information --
+wavelength                                [m] :           0.015
+energy passing through a plane orthogonal to the acoustic axis [W]
+                                              : 1.4965495613794e-06
+
+********** object 0 data **********
+data file name  : sph_m1_05z_md1.obj
+shift parameter : (       0,        0,        0)
+--- medium data ---
+medium data file name      = medium1.txt
+domain id  1 rho0 [kg/m^3] =     970
+             c0      [m/s] =    1004
+
+--- mesh data ---
+mesh data file name    = sphere_m1_05z.msh
+node number            =      602
+defined element number =     1200
+
+********** object 1 data **********
+data file name  : sph_m1_05z_md1.obj
+shift parameter : (       0,        0,    0.011)
+--- medium data ---
+medium data file name      = medium1.txt
+domain id  1 rho0 [kg/m^3] =     970
+             c0      [m/s] =    1004
+
+--- mesh data ---
+mesh data file name    = sphere_m1_05z.msh
+node number            =      602
+defined element number =     1200
+
+********** object 2 data **********
+data file name  : sph_m1_05z_md1.obj
+shift parameter : (       0,        0,   -0.011)
+--- medium data ---
+medium data file name      = medium1.txt
+domain id  1 rho0 [kg/m^3] =     970
+             c0      [m/s] =    1004
+
+--- mesh data ---
+mesh data file name    = sphere_m1_05z.msh
+node number            =      602
+defined element number =     1200
+
+
+initialize boundary value
+object id =  0
+  solve VP boundary value   finished. Elapsed time :     0 (sec)
+object id =  1
+  solve VP boundary value   finished. Elapsed time :     0 (sec)
+object id =  2
+  solve VP boundary value   finished. Elapsed time :     1 (sec)
+
+unit of iterative operation
+object id =  0
+  add scattered field       finished. Elapsed time :     9 (sec)
+object id =  1
+  add scattered field       finished. Elapsed time :     9 (sec)
+object id =  2
+  add scattered field       finished. Elapsed time :     9 (sec)
+object id =  0
+  solve VP boundary value   finished. Elapsed time :     1 (sec)
+object id =  1
+  solve VP boundary value   finished. Elapsed time :     0 (sec)
+object id =  2
+  solve VP boundary value   finished. Elapsed time :     0 (sec)
+Estimated time per iteration :    28 (sec)
+
+iterative operation start. convergence criterion cc < 1e-07, iter>10
+iter =  0, cc = 0.00800614
+iter =  1, cc = 0.000737632
+iter =  2, cc = 4.81521e-05
+iter =  3, cc = 5.09316e-06
+iter =  4, cc = 2.95771e-07
+iter =  5, cc = 3.12029e-08
+iter =  6, cc = 2.57508e-09
+iter =  7, cc = 1.83586e-10
+iter =  8, cc = 1.97459e-11
+iter =  9, cc = 1.24805e-12
+iter = 10, cc = 1.47611e-13
+iter = 11, cc = 8.49511e-15
+finished. Elapsed time :   342 (sec)
+Done writing ex.dat

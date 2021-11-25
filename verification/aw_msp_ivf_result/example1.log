@@ -1,0 +1,130 @@
+./example1.out veri.dat 
+
+ "mfb.txt" No.00 -- focused beam --
+medium density                       [kg/m^3] :            1000
+speed of sound in the medium            [m/s] :            1500
+frequency                                [Hz] :          100000
+sound pressure amplitude                 [Pa] :     10+      0I
+radius of focused transducer              [m] :           0.045
+curvature radius of the transducer        [m] :           0.072
+x-component of translation vector         [m] :               0
+y-component of translation vector         [m] :               0
+z-component of translation vector         [m] :               0
+rotation parameter theta                [rad] :               0
+rotation parameter psi                  [rad] :               0
+sampling number for Gauss-Legendre quadrature :              64
+-- additional information --
+wavelength                                [m] :           0.015
+energy passing through a plane orthogonal to the acoustic axis [W]
+                                              : 1.4965495613794e-06
+
+---- sphere data ( msphr.txt ) ----
+number of spheres                             :                3
+  Sphere ID 0
+medium density                       [kg/m^3] :              970
+speed of sound in the medium            [m/s] :             1004
+radius of sphere                              :            0.005
+x-coordinate of sphere center                 :                0
+y-coordinate of sphere center                 :                0
+z-coordinate of sphere center                 :                0
+basic sampling number on sphere surface       :               64
+division number for sphere surface    (per PI):                2
+limit of order number l                       :               40
+  Sphere ID 1
+medium density                       [kg/m^3] :              970
+speed of sound in the medium            [m/s] :             1004
+radius of sphere                              :            0.005
+x-coordinate of sphere center                 :                0
+y-coordinate of sphere center                 :                0
+z-coordinate of sphere center                 :            0.011
+basic sampling number on sphere surface       :               64
+division number for sphere surface    (per PI):                2
+limit of order number l                       :               40
+  Sphere ID 2
+medium density                       [kg/m^3] :              970
+speed of sound in the medium            [m/s] :             1004
+radius of sphere                              :            0.005
+x-coordinate of sphere center                 :               -0
+y-coordinate of sphere center                 :                0
+z-coordinate of sphere center                 :           -0.011
+basic sampling number on sphere surface       :               64
+division number for sphere surface    (per PI):                2
+limit of order number l                       :               40
+
+sound pressure and particle velocity at r=(-0.03, 0.01, 0.002)
+p  =-4.29060128698258e-02 +2.84794390960549e-02 I [Pa]
+vx = 1.50951224102401e-08 +5.63513524192554e-09 I [m/s]
+vy =-5.03170747008006e-09 -1.87837841397516e-09 I [m/s]
+vz =-7.49566686837854e-09 +6.70559735056864e-09 I [m/s]
+
+radiation force of sphere id 0
+F=(-1.90691011187155e-30,  0.00000000000000e+00, -1.61923980513631e-15) [N]
+radiation force of sphere id 1
+F=( 0.00000000000000e+00,  0.00000000000000e+00,  1.78656169240121e-15) [N]
+radiation force of sphere id 2
+F=( 0.00000000000000e+00,  0.00000000000000e+00,  3.60433141865775e-15) [N]
+
+
+-- verification of relation of sound pressure and particle velocity --
+relation : v = 1/k2 nabla p, k2 = i omega rho.
+calculate the derivative of p using the central difference. h=1e-06
+sphere id 0, r=(0.259343, 0.14168, 0.955336), outside the sphere
+  scattered_pv_amsp() : v_x = 4.75161889896915e-10 -3.87025153809580e-09 I
+  central difference  : v_x = 4.75161889125251e-10 -3.87025153033921e-09 I
+  scattered_pv_amsp() : v_y = 2.59582123529566e-10 -2.11432805158349e-09 I
+  central difference  : v_y = 2.59582123993790e-10 -2.11432805045165e-09 I
+  scattered_pv_amsp() : v_z = 1.63878311526934e-09 -1.42742880308633e-08 I
+  central difference  : v_z = 1.63878307050147e-09 -1.42742876501332e-08 I
+sphere id 1, r=(0.259343, 0.14168, 0.966336), outside the sphere
+  scattered_pv_amsp() : v_x =-3.76373507716727e-09 +7.09183199584490e-10 I
+  central difference  : v_x =-3.76373507008873e-09 +7.09183197459780e-10 I
+  scattered_pv_amsp() : v_y =-2.05613784376889e-09 +3.87428547688393e-10 I
+  central difference  : v_y =-2.05613784264236e-09 +3.87428546773255e-10 I
+  scattered_pv_amsp() : v_z =-1.40072365853465e-08 +2.75158631901600e-09 I
+  central difference  : v_z =-1.40072362107216e-08 +2.75158624655475e-09 I
+sphere id 2, r=(0.259343, 0.14168, 0.944336), outside the sphere
+  scattered_pv_amsp() : v_x = 3.60052953183779e-09 +1.67308128584301e-09 I
+  central difference  : v_x = 3.60052952398797e-09 +1.67308128295629e-09 I
+  scattered_pv_amsp() : v_y = 1.96697824799908e-09 +9.14008472167086e-10 I
+  central difference  : v_y = 1.96697824681745e-09 +9.14008471865360e-10 I
+  scattered_pv_amsp() : v_z = 1.31626855167674e-08 +5.98904179128032e-09 I
+  central difference  : v_z = 1.31626851668977e-08 +5.98904163121563e-09 I
+
+-- verification of boundary conditions --
+internal field p_w, v_w, scattered field p_s, v_s, incident field p_i, v_i
+boundary condition of sound pressure    : p_i + p_s = p_w 
+boundary condition of particle velocity : (v_i + v_s) dot n = v_w dot n
+sphere id 0, r=(0.00129672, 0.0007084, 0.00477668), n=(0.259343, 0.14168, 0.955336)
+  p_i + p_s =-1.33668715154386e+00 +8.58747331620020e-01 I
+  p_w       =-1.33668715154405e+00 +8.58747331619980e-01 I
+  (v_i + v_s) dot n =-1.28181578994917e-06 -2.34926078216323e-07 I
+  v_w dot n         =-1.28181578994983e-06 -2.34926078213643e-07 I
+sphere id 1, r=(0.00129672, 0.0007084, 0.0157767), n=(0.259343, 0.14168, 0.955336)
+  p_i + p_s =-1.86426025087555e-01 +1.40641270504901e+00 I
+  p_w       =-1.86426025087528e-01 +1.40641270504895e+00 I
+  (v_i + v_s) dot n =-5.29827595073720e-07 +5.40128871978901e-07 I
+  v_w dot n         =-5.29827595074230e-07 +5.40128871978474e-07 I
+sphere id 2, r=(0.00129672, 0.0007084, -0.00622332), n=(0.259343, 0.14168, 0.955336)
+  p_i + p_s =-9.36953731835130e-01 -1.21009050314736e+00 I
+  p_w       =-9.36953731835121e-01 -1.21009050314775e+00 I
+  (v_i + v_s) dot n =-4.49494443633604e-07 -1.16767593335863e-06 I
+  v_w dot n         =-4.49494443638482e-07 -1.16767593335905e-06 I
+
+-- verification of radiation force analysis --
+F_f :  far field method ( summation of field coefficients )
+F_n : near field method ( surface integral of radiation stress tensor )
+sphere id 0, rotation cetner rc=(0, 0, 0)
+  F_f=(-1.90691011187155e-30,  0.00000000000000e+00, -1.61923980513631e-15)
+  F_n=(-1.96785052141475e-30,  5.28900940346892e-31, -1.61923980513652e-15)
+  N_f=( 0.00000000000000e+00,  0.00000000000000e+00, -0.00000000000000e+00)
+  N_n=( 7.93080773956705e-34, -2.59483584879751e-33, -2.52277680898096e-34)
+sphere id 1, rotation cetner rc=(0, 0, 0)
+  F_f=( 0.00000000000000e+00,  0.00000000000000e+00,  1.78656169240121e-15)
+  F_n=(-2.94887869704544e-31, -1.51826305521444e-31,  1.78656169240098e-15)
+  N_f=(-0.00000000000000e+00,  0.00000000000000e+00,  0.00000000000000e+00)
+  N_n=( 1.91196747534449e-33, -5.06989636348010e-33,  1.59714550598248e-35)
+sphere id 2, rotation cetner rc=(0, 0, 0)
+  F_f=( 0.00000000000000e+00,  0.00000000000000e+00,  3.60433141865775e-15)
+  F_n=( 2.40023715242823e-31,  1.12719347283292e-30,  3.60433141865741e-15)
+  N_f=( 0.00000000000000e+00,  0.00000000000000e+00,  0.00000000000000e+00)
+  N_n=( 1.14921306165147e-32,  1.32004130902384e-33,  2.00003794807787e-34)

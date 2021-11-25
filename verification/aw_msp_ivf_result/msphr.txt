@@ -1,0 +1,7 @@
+## sphere datafile for aw_msp_ivf
+# number of spheres
+3
+# rho0 c0 a cx cy cz bsn bdv l_limit
+970.0 1004.0 0.005 +0.00 +0.00 +0.000 64 2 40
+970.0 1004.0 0.005 +0.00 +0.00 +0.011 64 2 40
+970.0 1004.0 0.005 -0.00 +0.00 -0.011 64 2 40

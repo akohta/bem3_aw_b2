@@ -1,0 +1,5 @@
+## beam data for Bessel beam (code aw_bb) 
+# rho0[kg/m^3] c0[m/s] f[Hz]
+1.0 1.5e3 20e3
+# real(p)[Pa] imag(p)[Pa] d_angle[rad] tx[m] ty[m] tz[m] theta[rad] phi[rad] 
+10.0 0.0 0.7 0.0 0.0 0.0 0.0 0.0

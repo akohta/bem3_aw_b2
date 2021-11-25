@@ -1,0 +1,7 @@
+#model setting file for bem3_aw_b2
+# number_of_objects 
+3
+# object_data_file_name shitf_x shift_y shit_z
+sph_m1_05z_md1.obj +0.000 +0.000 +0.000
+sph_m1_05z_md1.obj +0.000 +0.000 +0.011
+sph_m1_05z_md1.obj +0.000 +0.000 -0.011

@@ -1,0 +1,8 @@
+## datafile of focused beams for multi_aw  
+# rho0[kg/m^3] c0[m/s] f[Hz]
+1.0e3 1.5e3 100e3
+# number of beams
+2
+# real(p)[Pa] imag(p)[Pa] B[m] F[m] tx[m] ty[m] tz[m] theta[rad] phi[rad] nn
+10.0 0.0 45.0e-3 72.0e-3 0.0 0.0 0.0 0.8 0.00000000 64
+10.0 0.0 45.0e-3 72.0e-3 0.0 0.0 0.0 0.8 3.14159265 64

@@ -1,0 +1,92 @@
+./example1.out ex1.dat 
+
+ "mpw.txt" No.00 -- planewave --
+medium density                   [kg/m^3] :            1000
+speed of sound in the medium        [m/s] :            1500
+frequency                            [Hz] :          100000
+sound pressure amplitude             [Pa] :     10+      0I
+x-component of translation vector     [m] :               0
+y-component of translation vector     [m] :               0
+z-component of translation vector     [m] :               0
+rotation parameter theta            [rad] :               0
+rotation parameter psi              [rad] :               0
+-- additional information --
+wavelength                            [m] :           0.015
+absolute value of sound intensity [W/m^2] : 3.3333333333333e-05
+x-component of sound intensity    [W/m^2] :               0
+y-component of sound intensity    [W/m^2] :               0
+z-component of sound intensity    [W/m^2] : 3.3333333333333e-05
+
+********** object 0 data **********
+data file name  : sph_m1_05z_md1.obj
+shift parameter : (       0,        0,        0)
+--- medium data ---
+medium data file name      = medium1.txt
+domain id  1 rho0 [kg/m^3] =     970
+             c0      [m/s] =    1004
+
+--- mesh data ---
+mesh data file name    = sphere_m1_05z.msh
+node number            =      602
+defined element number =     1200
+
+********** object 1 data **********
+data file name  : sph_m1_05z_md1.obj
+shift parameter : (       0,        0,    0.006)
+--- medium data ---
+medium data file name      = medium1.txt
+domain id  1 rho0 [kg/m^3] =     970
+             c0      [m/s] =    1004
+
+--- mesh data ---
+mesh data file name    = sphere_m1_05z.msh
+node number            =      602
+defined element number =     1200
+
+********** object 2 data **********
+data file name  : sph_m1_05z_md1.obj
+shift parameter : (       0,        0,   -0.006)
+--- medium data ---
+medium data file name      = medium1.txt
+domain id  1 rho0 [kg/m^3] =     970
+             c0      [m/s] =    1004
+
+--- mesh data ---
+mesh data file name    = sphere_m1_05z.msh
+node number            =      602
+defined element number =     1200
+
+Total electromagnetic field at r=( -0.03, 0.01, 0.002 )
+type=0 setting ( 4 point Gauss-Legendre )
+p  =  7.32691160371016e+00 +7.14310718150095e+00 I 
+v_x= -3.95002690773071e-07 +1.44760848593171e-07 I 
+v_y=  1.31660098536444e-07 -4.82553610458971e-08 I 
+v_z=  4.54846710924977e-06 +5.02015116074069e-06 I 
+Total electromagnetic field at r=( -0.03, 0.01, 0.002 )
+type=1 setting ( 9 point or 7 point Gauss-Legendre )
+p  =  7.32691188216142e+00 +7.14310700537633e+00 I 
+v_x= -3.95002535766425e-07 +1.44761100805478e-07 I 
+v_y=  1.31660244610176e-07 -4.82553316609299e-08 I 
+v_z=  4.54846693566759e-06 +5.02015030479363e-06 I 
+
+Radiation force and torque
+type=0 setting ( 4 point Gauss-Legendre ) 
+object id = 0
+F = (-9.15078650056374e-27,-3.59720572780781e-28, 2.05341097226338e-12)
+N = (-6.06436820888653e-30, 1.58326848868186e-29,-4.57890446131173e-30), center of rotation ( 0, 0, 0)
+object id = 1
+F = (-2.27191940703651e-28,-3.63822649487931e-27, 1.83223449742224e-12)
+N = ( 2.72157012301249e-29, 3.94430452610506e-30,-1.12257641633471e-30), center of rotation ( 0, 0, 0)
+object id = 2
+F = (-9.09714395900871e-27,-6.89148886801076e-27, 1.64743371248429e-12)
+N = (-6.40949485492072e-29, 1.04992456104259e-28,-1.27557951335412e-30), center of rotation ( 0, 0, 0)
+type=1 setting ( 9 or 7 point Gauss-Legendre ) 
+objcet id = 0
+F = (-8.98670343227777e-27,-3.47098798297245e-28, 2.05186422233845e-12)
+N = (-7.24765956671805e-30, 1.49637052959111e-29,-6.94020892522093e-30), center of rotation ( 0, 0, 0)
+objcet id = 1
+F = ( 6.31088724176809e-29,-3.55302951711544e-27, 1.82970141868060e-12)
+N = ( 2.58351946459881e-29, 4.83177304447870e-30,-3.23558638069486e-30), center of rotation ( 0, 0, 0)
+objcet id = 2
+F = (-8.98670343227777e-27,-6.80313644662601e-27, 1.64710443089952e-12)
+N = (-6.47358980346993e-29, 1.02946348131342e-28,-3.08672403305588e-30), center of rotation ( 0, 0, 0)

@@ -1,0 +1,5 @@
+## medium data file for bem3_aw_b2
+# number of medium
+1
+# rho0[kg/m^3] c0[m/s]
+970.0 1004.0

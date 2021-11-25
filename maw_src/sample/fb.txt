@@ -1,0 +1,5 @@
+## beam data for focused beam (code aw_fb) 
+# rho0[kg/m^3] c0[m/s] f[Hz]
+1.0 1.5e3 1000e3
+# real(p)[Pa] imag(p)[Pa] B[m] F[m] tx[m] ty[m] tz[m] theta[rad] phi[rad] nn
+10.0 0.0 45.0e-3 72.0e-3 0.0 0.0 0.0 0.0 0.0 64

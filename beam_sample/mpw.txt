@@ -1,0 +1,8 @@
+## datafile of planewaves for multi_aw  
+# rho0[kg/m^3] c0[m/s] f[Hz]
+1.0e3 1.5e3 100e3
+# number of beams
+2
+# real(p)[Pa] imag(p)[Pa] tx[m] ty[m] tz[m] theta[rad] phi[rad] 
+10.0 0.0 0.0 0.0 0.0 0.2 0.00000000
+10.0 0.0 0.0 0.0 0.0 0.2 3.14159265
