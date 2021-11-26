@@ -353,7 +353,7 @@ void lu_dec_A(CMD *cm)
 void dat_write2(char *fname,DMDA *md)
 {
   FILE *fp;
-  char tfn[128],pfn[128];
+  char tfn[128],pfn[125];
   int i,j,d;
 
   if((fp=fopen(fname,"wb"))==NULL){    printf("solve_bieq2.c, dat_write2(), Failed to create the %s file.\n",fname);    exit(1);  }
@@ -418,7 +418,7 @@ void solve_coefficient(int flg,DMDA *md)
   time_t ms,me;
   double complex *B;
 
-  if(flg==1) printf("  solve VP boundary value   "); fflush(stdout);
+  if(flg==1){ printf("  solve VP boundary value   "); fflush(stdout); }
   time(&ms);
   B=(double complex *)m_alloc2(md->cm.na,sizeof(double complex),"bem3_aw_b2_solve_bieq.c, solve_coefficient(),B");
   create_Bmatrix(B,md);
@@ -427,14 +427,14 @@ void solve_coefficient(int flg,DMDA *md)
   free(B);
 
   time(&me);
-  if(flg==1) printf("finished. Elapsed time : %5g (sec)\n",difftime(me,ms));
+  if(flg==1){ printf("finished. Elapsed time : %5g (sec)\n",difftime(me,ms)); }
 
-  if(flg==1) printf("  solve PV boundary value   "); fflush(stdout);
+  if(flg==1){ printf("  solve PV boundary value   "); fflush(stdout); }
   time(&ms);
   solve_pv_bv(&(md->cm),md);
   solve_dpv_bv(&(md->cm),md);
   time(&me);
-  if(flg==1) printf("finished. Elapsed time : %5g (sec)\n",difftime(me,ms));
+  if(flg==1){ printf("finished. Elapsed time : %5g (sec)\n",difftime(me,ms)); }
 }
 
 void create_Bmatrix(double complex *B,DMDA *md)
@@ -541,7 +541,7 @@ void solve_coefficient_vp(int flg,DMDA *md)
   time_t ms,me;
   double complex *B;
 
-  if(flg==1) printf("  solve VP boundary value   "); fflush(stdout);
+  if(flg==1){ printf("  solve VP boundary value   "); fflush(stdout); }
   time(&ms);
   B=(double complex *)m_alloc2(md->cm.na,sizeof(double complex),"bem3_aw_b2_solve_bieq.c, solve_coefficient(),B");
   create_Bmatrix(B,md);
@@ -702,7 +702,7 @@ void solve_coefficient_pv(int flg,DMDA *md)
 
   time_t ms,me;
 
-  if(flg==1) printf("  solve PV boundary value   "); fflush(stdout);
+  if(flg==1){ printf("  solve PV boundary value   "); fflush(stdout); }
   time(&ms);
   solve_pv_bv(&(md->cm),md);
   solve_dpv_bv(&(md->cm),md);

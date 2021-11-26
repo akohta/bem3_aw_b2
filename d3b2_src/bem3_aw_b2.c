@@ -14,6 +14,7 @@ void read_dmda2(int argc,char **argv,DMDA *ad)
     exit(0);
   }
   
+  init_maw(&(ad->aw));      // multi_aw.h
   read_data_maw(&(ad->aw)); // multi_aw.h
   read_medium_data(argv[1],ad);
   read_mesh_data(argv[2],ad);
@@ -322,7 +323,7 @@ void mo_output_node_particles(char *fname,MOBJ *mo)
 {
   FILE *fp;
   int s1,s2,oid,i,j;
-  char *sd,fo[128]="";
+  char *sd,fo[256]="",tmp[256]="";
 
   sd=strrchr(fname,'.');
   if(sd==NULL){ // no file extension
@@ -331,8 +332,8 @@ void mo_output_node_particles(char *fname,MOBJ *mo)
   else {
     s1=strlen(fname);
     s2=strlen(sd);
-    strncpy(fo,fname,s1-s2);
-    sprintf(fo,"%s.particles",fo);
+    strncpy(tmp,fname,s1-s2);
+    sprintf(fo,"%s.particles",tmp);
   }
   
   if((fp=fopen(fo,"wt"))==NULL){    printf("Can not open the %s file.\n",fo);    exit(1);  }
