@@ -291,26 +291,38 @@ void d3b1_mkl_pardiso_create_matrixd(size_t n,size_t nnz,char *fn_a,char *fn_xa,
 
   // matrix A
   if((fp=fopen(fn_a,"rb"))==NULL){     printf("b_mkl_pardiso_create_matrix(),Failed to open the %s file.\n",fn_a);    exit(1); }
-  fread(A,sizeof(MKL_Complex16),nnz,fp);
+  if(fread(A,sizeof(MKL_Complex16),nnz,fp)!=nnz){
+    printf("d3b1_mkl_solver.c, d3b1_mkl_paradiso_create_matrixd(), failed to read the A. exit...\n");
+    exit(1);
+  }
   fclose(fp);
 
   // vector xa
   if((fp=fopen(fn_xa,"rb"))==NULL){     printf("b_mkl_pardiso_create_matrix(),Failed to open the %s file.\n",fn_xa);    exit(1); }
-  fread(xa,sizeof(MKL_INT),n+1,fp);
+  if(fread(xa,sizeof(MKL_INT),n+1,fp)!=n+1){
+    printf("d3b1_mkl_solver.c, d3b1_mkl_paradiso_create_matrixd(), failed to read the xa. exit...\n");
+    exit(1);
+  }
   fclose(fp);
   // offset 1
   for(i=0;i<=n;i++) xa[i]+=1;
 
   // vector asub
   if((fp=fopen(fn_asub,"rb"))==NULL){     printf("b_mkl_pardiso_create_matrix(),Failed to open the %s file.\n",fn_asub);    exit(1); }
-  fread(asub,sizeof(MKL_INT),nnz,fp);
+  if(fread(asub,sizeof(MKL_INT),nnz,fp)!=nnz){
+    printf("d3b1_mkl_solver.c, d3b1_mkl_paradiso_create_matrixd(), failed to read the asub. exit...\n");
+    exit(1);
+  }
   fclose(fp);
   // offset 1
   for(i=0;i<nnz;i++) asub[i]+=1;
 
   // vector b
   if((fp=fopen(fn_b,"rb"))==NULL){     printf("b_mkl_pardiso_create_matrix(),Failed to open the %s file.\n",fn_b);    exit(1); }
-  fread(B,sizeof(MKL_Complex16),n,fp);
+  if(fread(B,sizeof(MKL_Complex16),n,fp)!=n){
+    printf("d3b1_mkl_solver.c, d3b1_mkl_paradiso_create_matrixd(), failed to read the B. exit...\n");
+    exit(1);
+  }
   fclose(fp);
 }
 
@@ -324,7 +336,10 @@ void d3b1_mkl_pardiso_create_matrixs(size_t n,size_t nnz,char *fn_a,char *fn_xa,
   // matrix A
   if((fp=fopen(fn_a,"rb"))==NULL){     printf("b_mkl_pardiso_create_matrix(),Failed to open the %s file.\n",fn_a);    exit(1); }
   for(i=0;i<nnz;i++){
-    fread(&tc,sizeof(double complex),1,fp);
+    if(fread(&tc,sizeof(double complex),1,fp)!=1){
+      printf("d3b1_mkl_solver.c, d3b1_mkl_paradiso_create_matrixs(), failed to read the A. exit...\n");
+      exit(1);
+    }
     A[i].real=creal(tc);
     A[i].imag=cimag(tc);
   }
@@ -332,14 +347,20 @@ void d3b1_mkl_pardiso_create_matrixs(size_t n,size_t nnz,char *fn_a,char *fn_xa,
 
   // vector xa
   if((fp=fopen(fn_xa,"rb"))==NULL){     printf("b_mkl_pardiso_create_matrix(),Failed to open the %s file.\n",fn_xa);    exit(1); }
-  fread(xa,sizeof(MKL_INT),n+1,fp);
+  if(fread(xa,sizeof(MKL_INT),n+1,fp)!=n+1){
+    printf("d3b1_mkl_solver.c, d3b1_mkl_paradiso_create_matrixs(), failed to read the xa. exit...\n");
+    exit(1);
+  }
   fclose(fp);
   // offset 1
   for(i=0;i<=n;i++) xa[i]+=1;
 
   // vector asub
   if((fp=fopen(fn_asub,"rb"))==NULL){     printf("b_mkl_pardiso_create_matrix(),Failed to open the %s file.\n",fn_asub);    exit(1); }
-  fread(asub,sizeof(MKL_INT),nnz,fp);
+  if(fread(asub,sizeof(MKL_INT),nnz,fp)!=nnz){
+    printf("d3b1_mkl_solver.c, d3b1_mkl_paradiso_create_matrixs(), failed to read the asub. exit...\n");
+    exit(1);
+  }
   fclose(fp);
   // offset 1
   for(i=0;i<nnz;i++) asub[i]+=1;
@@ -347,7 +368,10 @@ void d3b1_mkl_pardiso_create_matrixs(size_t n,size_t nnz,char *fn_a,char *fn_xa,
   // vector b
   if((fp=fopen(fn_b,"rb"))==NULL){     printf("b_mkl_pardiso_create_matrix(),Failed to open the %s file.\n",fn_b);    exit(1); }
   for(i=0;i<n;i++){
-    fread(&tc,sizeof(double complex),1,fp);
+    if(fread(&tc,sizeof(double complex),1,fp)!=1){
+      printf("d3b1_mkl_solver.c, d3b1_mkl_paradiso_create_matrixs(), failed to read the B. exit...\n");
+      exit(1);
+    }
     B[i].real=creal(tc);
     B[i].imag=cimag(tc);
   }
@@ -393,16 +417,28 @@ void d3b1_mkl_lapacke_create_matrix(size_t n,size_t nnz,char *fn_a,char *fn_xa,c
   if((fxa=fopen(fn_xa,"rb"))==NULL){     printf("b_mkl_lapacke_create_matrix(), Failed to open the %s file.\n",fn_xa);    exit(1); }
   if((fas=fopen(fn_asub,"rb"))==NULL){     printf("b_mkl_lapacke_create_matrix(), Failed to open the %s file.\n",fn_asub);    exit(1); }
 
-  fread(&is,sizeof(MKL_INT),1,fxa);
-  fread(&ie,sizeof(MKL_INT),1,fxa);
+  if(fread(&is,sizeof(MKL_INT),1,fxa)!=1){
+    printf("d3b1_mkl_solver.c, d3b1_mkl_lapacke_create_matrix(), failed to read the is. exit...\n");
+    exit(1);
+  }
+  
   for(j=0;j<n;j++){
+    if(fread(&ie,sizeof(MKL_INT),1,fxa)!=1){
+      printf("d3b1_mkl_solver.c, d3b1_mkl_lapacke_create_matrix(), failed to read the ie. exit...\n");
+      exit(1);
+    }
     for(p=is;p<ie;p++){
-      fread(&i,sizeof(MKL_INT),1,fas);
-      fread(&tc,sizeof(MKL_Complex16),1,fa);
+      if(fread(&i,sizeof(MKL_INT),1,fas)!=1){
+        printf("d3b1_mkl_solver.c, d3b1_mkl_lapacke_create_matrix(), failed to read the i. exit...\n");
+        exit(1);
+      }
+      if(fread(&tc,sizeof(MKL_Complex16),1,fa)!=1){
+        printf("d3b1_mkl_solver.c, d3b1_mkl_lapacke_create_matrix(), failed to read the A. exit...\n");
+        exit(1);
+      }
       A[j*n+i]=tc;
     }
     is=ie;
-    fread(&ie,sizeof(MKL_INT),1,fxa);
   }
   fclose(fa);
   fclose(fxa);
@@ -410,8 +446,9 @@ void d3b1_mkl_lapacke_create_matrix(size_t n,size_t nnz,char *fn_a,char *fn_xa,c
 
   // vector B
   if((fa=fopen(fn_b,"rb"))==NULL){     printf("b_mkl_lapacke_create_matrix(), Failed to open the %s file.\n",fn_b);    exit(1); }
-  fread(B,sizeof(MKL_Complex16),n,fa);
+  if(fread(B,sizeof(MKL_Complex16),n,fa)!=n){
+    printf("d3b1_mkl_solver.c, d3b1_mkl_lapacke_create_matrix(), failed to read the B. exit...\n");
+    exit(1);
+  }
   fclose(fa);
 }
-
-

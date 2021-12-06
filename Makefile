@@ -3,9 +3,8 @@ CC     =gcc
 CFLAGS =-O3 -Wall
 LDFLAGS=-lpng -lz -lgsl -lgslcblas
 MPFLAGS=-fopenmp
-MP_LD  =-lgomp
 # link mkl lapack library, static linking 
-LDF_MKL =-Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_ilp64.a ${MKLROOT}/lib/intel64/libmkl_gnu_thread.a ${MKLROOT}/lib/intel64/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl#mkl lapack link library (static linking) 
+LDF_MKL =-Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_ilp64.a ${MKLROOT}/lib/intel64/libmkl_gnu_thread.a ${MKLROOT}/lib/intel64/libmkl_core.a -Wl,--end-group -lgomp -lpthread -lm -ldl#mkl lapack link library (static linking) 
 # mkl compile option
 COP_MKL =-DMKL_ILP64 -m64 -I${MKLROOT}/include
 SRCDIR1=d3b2_src
@@ -47,31 +46,31 @@ directories:
 	@mkdir -p $(OBJDIR)
 
 $(TARGET1) : $(TRGOBJ1)  
-	$(CC) $(LDFLAGS) -o $@ $^ $(LDF_MKL) $(MP_LD)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDF_MKL) $(LDFLAGS) $(MPFLAGS)
 
 $(TARGET2) : $(TRGOBJ2)  
-	$(CC) $(LDFLAGS) -o $@ $^ $(LDF_MKL) $(MP_LD)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDF_MKL) $(LDFLAGS) $(MPFLAGS)
 
 $(TARGET3) : $(TRGOBJ3)  
-	$(CC) $(LDFLAGS) -o $@ $^ $(LDF_MKL) $(MP_LD)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDF_MKL) $(LDFLAGS) $(MPFLAGS)
 
 $(TARGET4) : $(TRGOBJ4)  
-	$(CC) $(LDFLAGS) -o $@ $^ $(LDF_MKL) $(MP_LD)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDF_MKL) $(LDFLAGS) $(MPFLAGS)
 
 $(TARGET5) : $(TRGOBJ5)  
-	$(CC) $(LDFLAGS) -o $@ $^ $(LDF_MKL) $(MP_LD)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDF_MKL) $(LDFLAGS) $(MPFLAGS)
 
 $(OBJDIR)/%.o : $(SRCDIR1)/%.c
-	$(CC) $(CFLAGS) $(COP_MKL) $(MPFLAGS) -I$(SRCDIR2) -I$(SRCDIR3) -c $< -o $@
+	$(CC) $(CFLAGS) $(COP_MKL) -I$(SRCDIR2) -I$(SRCDIR3) -c $< -o $@ $(MPFLAGS)
 
 $(OBJDIR)/%.o : $(SRCDIR2)/%.c
-	$(CC) $(CFLAGS) $(COP_MKL) $(MPFLAGS) -I$(SRCDIR3) -c $< -o $@
+	$(CC) $(CFLAGS) $(COP_MKL) -I$(SRCDIR3) -c $< -o $@ $(MPFLAGS)
 
 $(OBJDIR)/%.o : $(SRCDIR3)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .c.o :
-	$(CC) $(CFLAGS) $(COP_MKL) $(MPFLAGS) -I$(SRCDIR1) -I$(SRCDIR2) -I$(SRCDIR3) -c $<
+	$(CC) $(CFLAGS) $(COP_MKL) -I$(SRCDIR1) -I$(SRCDIR2) -I$(SRCDIR3) -c $< $(MPFLAGS)
 
 clean:
 	@rm -rf $(TARGET1) $(TARGET2) $(TARGET3) $(TARGET4) $(TARGET5) $(OBJDIR) ./*.o

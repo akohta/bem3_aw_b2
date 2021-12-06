@@ -262,8 +262,14 @@ void create_matrix_csr_dac(int did,FILE *av,FILE *ap,FILE *ai,FILE *b,CMD *cm,DM
     td=ad->bd.sb[did].sid[t];
 
     for(tn=0;tn<4;tn++){
-      fread(tG,sizeof(double complex),Ne*4,fg);
-      fread(tH,sizeof(double complex),Ne*4,fh);
+      if(fread(tG,sizeof(double complex),Ne*4,fg)!=Ne*4){
+        printf("bem3_aw_b1_solve_bieq.c, create_matrix_csr_dac(), failed to read the tG. exit...\n");
+        exit(1);
+      }
+      if(fread(tH,sizeof(double complex),Ne*4,fh)!=Ne*4){
+        printf("bem3_aw_b1_solve_bieq.c, create_matrix_csr_dac(), failed to read the tH. exit...\n");
+        exit(1);
+      }
       if( tn==3 && ELT3==check_element_type(td,&(ad->bd)) )  continue;
 
       fwrite(&(cm->nnz),sizeof(size_t),1,ap); // write A pointer
@@ -456,9 +462,18 @@ void solve_pv_bv(CMD *cm,DMDA *ad)
       atd=abs(at);
 
       for(tn=0;tn<4;tn++){
-        fread(tdG,sizeof(double complex),2*Ne*4,fdg);
-        fread(tdH,sizeof(double complex),2*Ne*4,fdh);
-        fread(tdF,sizeof(double),3,fdf);
+        if(fread(tdG,sizeof(double complex),2*Ne*4,fdg)!=2*Ne*4){
+          printf("bem3_aw_b1_solve_bieq.c, solve_pv_bv(), failed to read the tdG. exit...\n");
+          exit(1);
+        }
+        if(fread(tdH,sizeof(double complex),2*Ne*4,fdh)!=2*Ne*4){
+          printf("bem3_aw_b1_solve_bieq.c, solve_pv_bv(), failed to read the tdH. exit...\n");
+          exit(1);
+        }
+        if(fread(tdF,sizeof(double),3,fdf)!=3){
+          printf("bem3_aw_b1_solve_bieq.c, solve_pv_bv(), failed to read the tdF. exit...\n");
+          exit(1);
+        }
         if( tn==3 && ELT3==check_element_type(atd,&(ad->bd)) )  continue;
 
         // tangential vector
@@ -562,8 +577,14 @@ void solve_dpv_bv(CMD *cm,DMDA *ad)
       atd=abs(ad->bd.sb[d].sid[t]);
 
       for(tn=0;tn<4;tn++){
-        fread(tG,sizeof(double complex),Ne*4,fg);
-        fread(tH,sizeof(double complex),Ne*4,fh);
+        if(fread(tG,sizeof(double complex),Ne*4,fg)!=Ne*4){
+          printf("bem3_aw_b1_solve_bieq.c, solve_dpv_bv(), failed to read the tG. exit...\n");
+          exit(1);
+        }
+        if(fread(tH,sizeof(double complex),Ne*4,fh)!=Ne*4){
+          printf("bem3_aw_b1_solve_bieq.c, solve_dpv_bv(), failed to read the tH. exit...\n");
+          exit(1);
+        }
         if( tn==3 && ELT3==check_element_type(atd,&(ad->bd)) )  continue;
 
         for(i=0;i<ldb;i++){

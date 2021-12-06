@@ -225,8 +225,14 @@ void create_Amatrix_csr_dac(int did,FILE *av,FILE *ap,FILE *ai,CMD *cm,DMDA *md)
     td=md->bd.sb[did].sid[t];
 
     for(tn=0;tn<4;tn++){
-      fread(tG,sizeof(double complex),Ne*4,fg);
-      fread(tH,sizeof(double complex),Ne*4,fh);
+      if(fread(tG,sizeof(double complex),Ne*4,fg)!=Ne*4){
+        printf("bem3_aw_b2_solve_bieq.c, create_Amatrix_csr_dac(), failed to read the tG. exit...\n");
+        exit(1);
+      }
+      if(fread(tH,sizeof(double complex),Ne*4,fh)!=Ne*4){
+        printf("bem3_aw_b2_solve_bieq.c, create_Amatrix_csr_dac(), failed to read the tG. exit...\n");
+        exit(1);
+      }
       if( tn==3 && ELT3==check_element_type(td,&(md->bd)) )  continue;
 
       fwrite(&(cm->nnz),sizeof(size_t),1,ap); // write A pointer
@@ -307,16 +313,28 @@ void lu_dec_A(CMD *cm)
   if((fxa=fopen(cm->aptr,"rb"))==NULL){     printf("bem3_aw_b2_solve_bieq.c, lu_dec_A(), Failed to open the %s file.\n",cm->aptr);    exit(1); }
   if((fas=fopen(cm->aidx,"rb"))==NULL){     printf("bem3_aw_b2_solve_bieq.c, lu_dec_A(), Failed to open the %s file.\n",cm->aidx);    exit(1); }
 
-  fread(&is,sizeof(MKL_INT),1,fxa);
-  fread(&ie,sizeof(MKL_INT),1,fxa);
+  if(fread(&is,sizeof(MKL_INT),1,fxa)!=1){
+    printf("bem3_aw_b2_solve_bieq.c, lu_dec_A(), failed to read the is. exit...\n");
+    exit(1);
+  }    
+  
   for(j=0;j<cm->na;j++){
+    if(fread(&ie,sizeof(MKL_INT),1,fxa)!=1){
+      printf("bem3_aw_b2_solve_bieq.c, lu_dec_A(), failed to read the ie. exit...\n");
+      exit(1);
+    }
     for(p=is;p<ie;p++){
-      fread(&i,sizeof(MKL_INT),1,fas);
-      fread(&tc,sizeof(MKL_Complex16),1,fa);
+      if(fread(&i,sizeof(MKL_INT),1,fas)!=1){
+        printf("bem3_aw_b2_solve_bieq.c, lu_dec_A(), failed to read the i. exit...\n");
+        exit(1);
+      }
+      if(fread(&tc,sizeof(MKL_Complex16),1,fa)!=1){
+        printf("bem3_aw_b2_solve_bieq.c, lu_dec_A(), failed to read the A. exit...\n");
+        exit(1);
+      }
       A[j*cm->na+i]=tc;
     }
     is=ie;
-    fread(&ie,sizeof(MKL_INT),1,fxa);
   }
   fclose(fa);
   fclose(fxa);
@@ -466,8 +484,14 @@ void create_Bmatrix_dac(size_t *j,size_t did,double complex *B,DMDA *md)
     td=md->bd.sb[did].sid[t];
 
     for(tn=0;tn<4;tn++){
-      fread(tG,sizeof(double complex),Ne*4,fg);
-      fread(tH,sizeof(double complex),Ne*4,fh);
+      if(fread(tG,sizeof(double complex),Ne*4,fg)!=Ne*4){
+        printf("bem3_aw_b2_solve_bieq.c, create_Bmatrix_dac(), failed to read the tG. exit...\n");
+        exit(1);
+      }
+      if(fread(tH,sizeof(double complex),Ne*4,fh)!=Ne*4){
+        printf("bem3_aw_b2_solve_bieq.c, create_Bmatrix_dac(), failed to read the tH. exit...\n");
+        exit(1);
+      }
       if( tn==3 && ELT3==check_element_type(td,&(md->bd)) )  continue;
 
       B[*j]=0.0;
@@ -519,7 +543,10 @@ void solve_ABmatrix(double complex *Bc,DMDA *md)
   if((fa=fopen(md->cm.lupfn,"rb"))==NULL){     printf("bem3_aw_b2_solve_bieq.c, solve_ABmatrix(), Failed to open the %s file.\n",md->cm.lupfn);    exit(1); }
 
   for(i=0;i<N;i++){
-    fread(tA,sizeof(double complex),N,fa);
+    if(fread(tA,sizeof(double complex),N,fa)!=N){
+      printf("bem3_aw_b2_solve_bieq.c, solve_ABmatrix(), failed to read the tA. exit...\n");
+      exit(1);
+    }
     X[i]=0.0;
     for(j=0;j<N;j++) X[i]+=tA[j]*Bc[j];
   }

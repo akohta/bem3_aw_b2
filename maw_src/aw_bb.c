@@ -11,22 +11,74 @@ void read_data_abb(char *fname, Abb *pw)
     exit(1);
   }
   
-  fgets(buf,256,fp);  fgets(buf,256,fp);
-  fscanf(fp,"%lf",&td1);    pw->rho0=td1;
-  fscanf(fp,"%lf",&td1);    pw->c0  =td1;
-  fscanf(fp,"%lf\n",&td1);  pw->f   =td1;
-  fgets(buf,256,fp);
-  fscanf(fp,"%lf",&td1);
-  fscanf(fp,"%lf",&td2);    pw->p=td1+I*td2;
-  fscanf(fp,"%lf",&td1);    pw->d_angle=td1;
-  fscanf(fp,"%lf",&td1);    pw->tv[0]=td1;
-  fscanf(fp,"%lf",&td1);    pw->tv[1]=td1;
-  fscanf(fp,"%lf",&td1);    pw->tv[2]=td1;
-  fscanf(fp,"%lf",&td1);    pw->theta=td1;
-  fscanf(fp,"%lf",&td1);    pw->psi  =td1;
+  if(fgets(buf,256,fp)==NULL){
+    printf("aw_bb.c, read_data_abb(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("aw_bb.c, read_data_abb(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&td1)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the rho0. exit...\n");
+    exit(1); 
+  }
+  pw->rho0=td1;
+  if(fscanf(fp,"%lf",&td1)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the c0. exit...\n");
+    exit(1);
+  }
+  pw->c0  =td1;
+  if(fscanf(fp,"%lf\n",&td1)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the f. exit...\n");
+    exit(1); 
+  }
+  pw->f   =td1;
+  if(fgets(buf,256,fp)==NULL){
+    printf("aw_bb.c, read_data_abb(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&td1)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the real(p). exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&td2)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the imag(p). exit...\n");
+    exit(1); 
+  }
+  pw->p=td1+I*td2;
+  if(fscanf(fp,"%lf",&td1)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the d_angle. exit...\n");
+    exit(1);
+  }
+  pw->d_angle=td1;
+  if(fscanf(fp,"%lf",&td1)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the tv[0]. exit...\n");
+    exit(1); 
+  }
+  pw->tv[0]=td1;
+  if(fscanf(fp,"%lf",&td1)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the tv[1]. exit...\n");
+    exit(1); 
+  }
+  pw->tv[1]=td1;
+  if(fscanf(fp,"%lf",&td1)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the tv[2]. exit...\n");
+    exit(1);
+  }
+  pw->tv[2]=td1;
+  if(fscanf(fp,"%lf",&td1)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the theta. exit...\n");
+    exit(1);
+  }
+  pw->theta=td1;
+  if(fscanf(fp,"%lf",&td1)!=1){
+    printf("aw_bb.c, read_data_abb(), failed to read the psi. exit...\n");
+    exit(1); 
+  }
+  pw->psi  =td1;
   
   fclose(fp); 
-  
 }
 
 void print_data_abb(Abb *pw)

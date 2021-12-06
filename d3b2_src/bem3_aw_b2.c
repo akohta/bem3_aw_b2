@@ -129,16 +129,31 @@ void mo_initialize(int argc,char **argv,MOBJ *mo)
 
   if((fp=fopen(argv[1],"rt"))==NULL){    printf("bem3_aw_b2.c, mo_initialize(), Can not open the %s file.\n",argv[1]);    exit(1);  }
 
-  fgets(tmp,256,fp);
-  fgets(tmp,256,fp);
+  if(fgets(tmp,256,fp)==NULL){
+    printf("bem3_aw_b2.c, mo_initialize(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fgets(tmp,256,fp)==NULL){
+    printf("bem3_aw_b2.c, mo_initialize(), failed to read the line. exit...\n");
+    exit(1);
+  }
 
-  fscanf(fp,"%d\n",&ti); // number of objects
+  if(fscanf(fp,"%d\n",&ti)!=1){ // number of objects
+    printf("bem3_aw_b2.c, mo_initialize(), failed to read the N. exit...\n");
+    exit(1);
+  }
   mo->N=ti;
   mo_malloc(mo); // malloc
 
-  fgets(tmp,256,fp);
+  if(fgets(tmp,256,fp)==NULL){
+    printf("bem3_aw_b2.c, mo_initialize(), failed to read the line. exit...\n");
+    exit(1);
+  }
   for(i=0;i<mo->N;i++){
-    fscanf(fp,"%s %lf %lf %lf",mo->mod_fn[i],&(mo->rs[i][0]),&(mo->rs[i][1]),&(mo->rs[i][2]));
+    if(fscanf(fp,"%s %lf %lf %lf",mo->mod_fn[i],&(mo->rs[i][0]),&(mo->rs[i][1]),&(mo->rs[i][2]))!=4){
+      printf("bem3_aw_b2.c, mo_initialize(), failed to read the mod_fn[i],rs[i]. exit...\n");
+      exit(1);
+    }
     dat_read2(mo->mod_fn[i],&(mo->md[i]));
     rotation_translation_obj(rv,0.0,mo->rs[i],&(mo->md[i]));
     init_elem_const(&(mo->md[i].bd));
@@ -259,12 +274,24 @@ void mo_dat_read(char *fname,MOBJ *mo)
 
   if((fp=fopen(fname,"rb"))==NULL){    printf("bem3_aw_b2.c, mo_dat_read(), Failed to open the %s file.\n",fname);    exit(1);  }
 
-  fread(&(mo->N),sizeof(int),1,fp);
+  if(fread(&(mo->N),sizeof(int),1,fp)!=1){
+    printf("bem3_aw_b2.c, mo_dat_read(), failed to read the N. exit...\n");
+    exit(1);
+  }
   mo_malloc(mo);
   for(m=0;m<mo->N;m++){
-    fread(mo->mod_fn[m],sizeof(char),256,fp);
-    fread(mo->rs[m],sizeof(double),3,fp);
-    fread(&(mo->md[m]),sizeof(DMDA),1,fp);
+    if(fread(mo->mod_fn[m],sizeof(char),256,fp)!=256){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the mod_fn[m]. exit...\n");
+      exit(1);
+    }
+    if(fread(mo->rs[m],sizeof(double),3,fp)!=3){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the rs[m]. exit...\n");
+      exit(1);
+    }
+    if(fread(&(mo->md[m]),sizeof(DMDA),1,fp)!=1){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the md[m]. exit...\n");
+      exit(1);
+    }
      // material def
     mo->md[m].rho0=(double *)m_alloc2(mo->md[m].MN+1,sizeof(double),"bem3_aw_b2.c,mo_dat_read(),mo->md[m].rho0");
     mo->md[m].c0  =(double *)m_alloc2(mo->md[m].MN+1,sizeof(double),"bem3_aw_b2.c,mo_dat_read(),mo->md[m].c0");
@@ -272,43 +299,148 @@ void mo_dat_read(char *fname,MOBJ *mo)
     mo->md[m].K0  =(double *)m_alloc2(mo->md[m].MN+1,sizeof(double),"bem3_aw_b2.c,mo_dat_read(),mo->md[m].K0");
     mo->md[m].k1=(double complex *)m_alloc2(mo->md[m].MN+1,sizeof(double complex),"bem3_aw_b2.c,mo_dat_read(),mo->md[m].k1");
     mo->md[m].k2=(double complex *)m_alloc2(mo->md[m].MN+1,sizeof(double complex),"bem3_aw_b2.c,mo_dat_read(),mo->md[m].k2");
-    fread(mo->md[m].rho0,sizeof(double),mo->md[m].MN+1,fp);
-    fread(mo->md[m].c0,sizeof(double),mo->md[m].MN+1,fp);
-    fread(mo->md[m].k0,sizeof(double),mo->md[m].MN+1,fp);
-    fread(mo->md[m].K0,sizeof(double),mo->md[m].MN+1,fp);
-    fread(mo->md[m].k1,sizeof(double complex),mo->md[m].MN+1,fp);
-    fread(mo->md[m].k2,sizeof(double complex),mo->md[m].MN+1,fp);
+    if(fread(mo->md[m].rho0,sizeof(double),mo->md[m].MN+1,fp)!=mo->md[m].MN+1){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the rho0. exit...\n");
+      exit(1);
+    }
+    if(fread(mo->md[m].c0,sizeof(double),mo->md[m].MN+1,fp)!=mo->md[m].MN+1){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the c0. exit...\n");
+      exit(1);
+    }
+    if(fread(mo->md[m].k0,sizeof(double),mo->md[m].MN+1,fp)!=mo->md[m].MN+1){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the k0. exit...\n");
+      exit(1);
+    }
+    if(fread(mo->md[m].K0,sizeof(double),mo->md[m].MN+1,fp)!=mo->md[m].MN+1){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the K0. exit...\n");
+      exit(1);
+    }
+    if(fread(mo->md[m].k1,sizeof(double complex),mo->md[m].MN+1,fp)!=mo->md[m].MN+1){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the k1. exit...\n");
+      exit(1);
+    }
+    if(fread(mo->md[m].k2,sizeof(double complex),mo->md[m].MN+1,fp)!=mo->md[m].MN+1){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the k2. exit...\n");
+      exit(1);
+    }
     // beam data
     mo->md[m].aw.bd.pw=(Apw *)m_alloc2(mo->md[m].aw.n_pw,sizeof(Apw),"bem3_aw_b2.c,mo_dat_read(),mo->md[m].aw.bd.pw");
-    fread(mo->md[m].aw.bd.pw,sizeof(Apw),mo->md[m].aw.n_pw,fp);
+    if(fread(mo->md[m].aw.bd.pw,sizeof(Apw),mo->md[m].aw.n_pw,fp)!=mo->md[m].aw.n_pw){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the pw. exit...\n");
+      exit(1);
+    }
     mo->md[m].aw.bd.bb=(Abb *)m_alloc2(mo->md[m].aw.n_bb,sizeof(Abb),"bem3_aw_b2.c,mo_dat_read(),mo->md[m].aw.bd.bb");
-    fread(mo->md[m].aw.bd.bb,sizeof(Abb),mo->md[m].aw.n_bb,fp);
+    if(fread(mo->md[m].aw.bd.bb,sizeof(Abb),mo->md[m].aw.n_bb,fp)!=mo->md[m].aw.n_bb){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the bb. exit...\n");
+      exit(1);
+    }
     mo->md[m].aw.bd.fb=(Afb *)m_alloc2(mo->md[m].aw.n_fb,sizeof(Afb),"bem3_aw_b2.c,mo_dat_read(),mo->md[m].aw.bd.fb");
-    fread(mo->md[m].aw.bd.fb,sizeof(Afb),mo->md[m].aw.n_fb,fp);
+    if(fread(mo->md[m].aw.bd.fb,sizeof(Afb),mo->md[m].aw.n_fb,fp)!=mo->md[m].aw.n_fb){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the N. exit...\n");
+      exit(1);
+    }
     setup_maw(&(mo->md[m].aw));
     // BOUD
     malloc_node(&(mo->md[m].bd)); // malloc
     malloc_elem(&(mo->md[m].bd)); // malloc
-    for(i=0;i<=mo->md[m].bd.Nn;i++) fread(mo->md[m].bd.rn[i],sizeof(double),3,fp);
-    for(i=0;i<=mo->md[m].bd.Ne;i++) fread(mo->md[m].bd.ed[i],sizeof(int),4,fp);
-    for(i=0;i<=mo->md[m].bd.Ne;i++) fread(mo->md[m].bd.eni[i],sizeof(int),4,fp);
-    fread(mo->md[m].bd.md,sizeof(int),mo->md[m].bd.Ne+1,fp);
-    fread(mo->md[m].bd.sd,sizeof(int),mo->md[m].bd.Ne+1,fp);
-    fread(mo->md[m].bd.gd,sizeof(int),mo->md[m].bd.Ne+1,fp);
-    for(i=0;i<=mo->md[m].bd.Ne;i++) for(j=0;j<4;j++) fread(mo->md[m].bd.ren[i][j],sizeof(double),3,fp);
-    for(i=0;i<=mo->md[m].bd.Ne;i++) for(j=0;j<4;j++) fread(mo->md[m].bd.wen[i][j],sizeof(double),3,fp);
-    for(i=0;i<=mo->md[m].bd.Ne;i++) fread(mo->md[m].bd. Pi[i],sizeof(double complex),4,fp);
-    for(i=0;i<=mo->md[m].bd.Ne;i++) fread(mo->md[m].bd.dPi[i],sizeof(double complex),4,fp);
+    for(i=0;i<=mo->md[m].bd.Nn;i++){
+      if(fread(mo->md[m].bd.rn[i],sizeof(double),3,fp)!=3){
+        printf("bem3_aw_b2.c, mo_dat_read(), failed to read the rn[i]. exit...\n");
+        exit(1);
+      }
+    }
+    for(i=0;i<=mo->md[m].bd.Ne;i++){
+      if(fread(mo->md[m].bd.ed[i],sizeof(int),4,fp)!=4){
+        printf("bem3_aw_b2.c, mo_dat_read(), failed to read the ed[i]. exit...\n");
+        exit(1);
+      }
+    }
+    for(i=0;i<=mo->md[m].bd.Ne;i++){
+      if(fread(mo->md[m].bd.eni[i],sizeof(int),4,fp)!=4){
+        printf("bem3_aw_b2.c, mo_dat_read(), failed to read the eni[i]. exit...\n");
+        exit(1);
+      }
+    }
+    if(fread(mo->md[m].bd.md,sizeof(int),mo->md[m].bd.Ne+1,fp)!=mo->md[m].bd.Ne+1){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the md. exit...\n");
+      exit(1);
+    }
+    if(fread(mo->md[m].bd.sd,sizeof(int),mo->md[m].bd.Ne+1,fp)!=mo->md[m].bd.Ne+1){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the sd. exit...\n");
+      exit(1);
+    }
+    if(fread(mo->md[m].bd.gd,sizeof(int),mo->md[m].bd.Ne+1,fp)!=mo->md[m].bd.Ne+1){
+      printf("bem3_aw_b2.c, mo_dat_read(), failed to read the gd. exit...\n");
+      exit(1);
+    }
+    for(i=0;i<=mo->md[m].bd.Ne;i++){
+      for(j=0;j<4;j++){
+        if(fread(mo->md[m].bd.ren[i][j],sizeof(double),3,fp)!=3){
+          printf("bem3_aw_b2.c, mo_dat_read(), failed to read the ren[i][j]. exit...\n");
+          exit(1);
+        }
+      }
+    }
+    for(i=0;i<=mo->md[m].bd.Ne;i++){
+      for(j=0;j<4;j++){
+        if(fread(mo->md[m].bd.wen[i][j],sizeof(double),3,fp)!=3){
+          printf("bem3_aw_b2.c, mo_dat_read(), failed to read the wen[i][j]. exit...\n");
+          exit(1);
+        }
+      }
+    }
+    for(i=0;i<=mo->md[m].bd.Ne;i++){
+      if(fread(mo->md[m].bd. Pi[i],sizeof(double complex),4,fp)!=4){
+        printf("bem3_aw_b2.c, mo_dat_read(), failed to read the Pi[i]. exit...\n");
+        exit(1);
+      }
+    }
+    for(i=0;i<=mo->md[m].bd.Ne;i++){
+      if(fread(mo->md[m].bd.dPi[i],sizeof(double complex),4,fp)!=4){
+        printf("bem3_aw_b2.c, mo_dat_read(), failed to read the dPi[i]. exit...\n");
+        exit(1);
+      }
+    }
     init_elem_const(&(mo->md[m].bd)); // setup
     // sub domain data
     malloc_sub_domain(&(mo->md[m])); // malloc
     for(d=0;d<=mo->md[m].MN;d++){
-      fread(&tmp,sizeof(int),1,fp);
-      fread(mo->md[m].bd.sb[d].sid,sizeof(int),mo->md[m].bd.sb[d].Ne+1,fp);
-      for(i=0;i<=mo->md[m].bd.sb[d].Ne;i++) fread(mo->md[m].bd.sb[d]. P[i],sizeof(double complex),4,fp);
-      for(i=0;i<=mo->md[m].bd.sb[d].Ne;i++) fread(mo->md[m].bd.sb[d].dP[i],sizeof(double complex),4,fp);
-      for(i=0;i<=mo->md[m].bd.sb[d].Ne;i++) for(j=0;j<4;j++) fread(mo->md[m].bd.sb[d]. pv[i][j],sizeof(double complex),3,fp);
-      for(i=0;i<=mo->md[m].bd.sb[d].Ne;i++) for(j=0;j<4;j++) fread(mo->md[m].bd.sb[d].dpv[i][j],sizeof(double complex),3,fp);
+      if(fread(&tmp,sizeof(int),1,fp)!=1){
+        printf("bem3_aw_b2.c, mo_dat_read(), failed to read the tmp. exit...\n");
+        exit(1);
+      }
+      if(fread(mo->md[m].bd.sb[d].sid,sizeof(int),mo->md[m].bd.sb[d].Ne+1,fp)!=mo->md[m].bd.sb[d].Ne+1){
+        printf("bem3_aw_b2.c, mo_dat_read(), failed to read the sid. exit...\n");
+        exit(1);
+      }
+      for(i=0;i<=mo->md[m].bd.sb[d].Ne;i++){
+        if(fread(mo->md[m].bd.sb[d]. P[i],sizeof(double complex),4,fp)!=4){
+          printf("bem3_aw_b2.c, mo_dat_read(), failed to read the P[i]. exit...\n");
+          exit(1);
+        }
+      }
+      for(i=0;i<=mo->md[m].bd.sb[d].Ne;i++){
+        if(fread(mo->md[m].bd.sb[d].dP[i],sizeof(double complex),4,fp)!=4){
+          printf("bem3_aw_b2.c, mo_dat_read(), failed to read the dP[i]. exit...\n");
+          exit(1);
+        }
+      }
+      for(i=0;i<=mo->md[m].bd.sb[d].Ne;i++){
+        for(j=0;j<4;j++){
+          if(fread(mo->md[m].bd.sb[d]. pv[i][j],sizeof(double complex),3,fp)!=3){
+            printf("bem3_aw_b2.c, mo_dat_read(), failed to read the pv[i][j]. exit...\n");
+            exit(1);
+          }
+        }
+      }
+      for(i=0;i<=mo->md[m].bd.sb[d].Ne;i++){
+        for(j=0;j<4;j++){
+          if(fread(mo->md[m].bd.sb[d].dpv[i][j],sizeof(double complex),3,fp)!=3){
+            printf("bem3_aw_b2.c, mo_dat_read(), failed to read the dpv[i][j]. exit...\n");
+            exit(1);
+          }
+        }
+      }
     }
 
     mo->md[m].cm.MN=mo->md[m].MN;
@@ -323,19 +455,21 @@ void mo_output_node_particles(char *fname,MOBJ *mo)
 {
   FILE *fp;
   int s1,s2,oid,i,j;
-  char *sd,fo[256]="",tmp[256]="";
+  char *sd,fo[256]="",tf[200]="";
 
-  sd=strrchr(fname,'.');
-  if(sd==NULL){ // no file extension
-    sprintf(fo,"%s.particles",fname);
+  s1=strlen(fname);
+  if(s1>200){
+    printf("setup.c, output_node_particles(), file name is too long. exit...\n");
+    exit(1);
   }
-  else {
-    s1=strlen(fname);
+  sprintf(fo,"%s",fname);
+  sd=strrchr(fo,'.');
+  if(sd!=NULL){
     s2=strlen(sd);
-    strncpy(tmp,fname,s1-s2);
-    sprintf(fo,"%s.particles",tmp);
+    strncpy(tf,fname,s1-s2);
+    sprintf(fo,"%s.particles",tf);
   }
-  
+
   if((fp=fopen(fo,"wt"))==NULL){    printf("Can not open the %s file.\n",fo);    exit(1);  }
   fprintf(fp,"# x y z object_id\n");
   
@@ -411,7 +545,10 @@ void dat_read2(char *fname,DMDA *md)
 
   if((fp=fopen(fname,"rb"))==NULL){    printf("bem3_aw_b2.c, dat_read2(), Failed to open the %s file.\n",fname);    exit(1);  }
 
-  fread(md,sizeof(DMDA),1,fp);
+  if(fread(md,sizeof(DMDA),1,fp)!=1){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the md. exit...\n");
+    exit(1);
+  }
   // medium data
   md->rho0=(double *)m_alloc2(md->MN+1,sizeof(double),"bem3_aw_b2.c, dat_read2(),md->rho0");
   md->c0  =(double *)m_alloc2(md->MN+1,sizeof(double),"bem3_aw_b2.c, dat_read2(),md->c0");
@@ -419,19 +556,46 @@ void dat_read2(char *fname,DMDA *md)
   md->K0  =(double *)m_alloc2(md->MN+1,sizeof(double),"bem3_aw_b2.c, dat_read2(),md->K0");
   md->k1=(double complex *)m_alloc2(md->MN+1,sizeof(double complex),"bem3_aw_b2.c, dat_read2(),md->k1");
   md->k2=(double complex *)m_alloc2(md->MN+1,sizeof(double complex),"bem3_aw_b2.c, dat_read2(),md->k2");
-  fread(md->rho0,sizeof(double),md->MN+1,fp);
-  fread(md->c0,sizeof(double),md->MN+1,fp);
-  fread(md->k0,sizeof(double),md->MN+1,fp);
-  fread(md->K0,sizeof(double),md->MN+1,fp);
-  fread(md->k1,sizeof(double complex),md->MN+1,fp);
-  fread(md->k2,sizeof(double complex),md->MN+1,fp);
+  if(fread(md->rho0,sizeof(double),md->MN+1,fp)!=md->MN+1){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the rho0. exit...\n");
+    exit(1);
+  }
+  if(fread(md->c0,sizeof(double),md->MN+1,fp)!=md->MN+1){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the c0. exit...\n");
+    exit(1);
+  }
+  if(fread(md->k0,sizeof(double),md->MN+1,fp)!=md->MN+1){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the k0. exit...\n");
+    exit(1);
+  }
+  if(fread(md->K0,sizeof(double),md->MN+1,fp)!=md->MN+1){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the K0. exit...\n");
+    exit(1);
+  }
+  if(fread(md->k1,sizeof(double complex),md->MN+1,fp)!=md->MN+1){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the k1. exit...\n");
+    exit(1);
+  }
+  if(fread(md->k2,sizeof(double complex),md->MN+1,fp)!=md->MN+1){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the k2. exit...\n");
+    exit(1);
+  }
   // beam data
   md->aw.bd.pw=(Apw *)m_alloc2(md->aw.n_pw,sizeof(Apw),"bem3_aw_b2.c,dat_read2(),md->aw.bd.pw");
-  fread(md->aw.bd.pw,sizeof(Apw),md->aw.n_pw,fp);
+  if(fread(md->aw.bd.pw,sizeof(Apw),md->aw.n_pw,fp)!=md->aw.n_pw){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the pw. exit...\n");
+    exit(1);
+  }
   md->aw.bd.bb=(Abb *)m_alloc2(md->aw.n_bb,sizeof(Abb),"bem3_aw_b2.c,dat_read2(),md->aw.bd.bb");
-  fread(md->aw.bd.bb,sizeof(Abb),md->aw.n_bb,fp);
+  if(fread(md->aw.bd.bb,sizeof(Abb),md->aw.n_bb,fp)!=md->aw.n_bb){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the bb. exit...\n");
+    exit(1);
+  }
   md->aw.bd.fb=(Afb *)m_alloc2(md->aw.n_fb,sizeof(Afb),"bem3_aw_b2.c,dat_read2(),md->aw.bd.fb");
-  fread(md->aw.bd.fb,sizeof(Afb),md->aw.n_fb,fp);
+  if(fread(md->aw.bd.fb,sizeof(Afb),md->aw.n_fb,fp)!=md->aw.n_fb){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the fb. exit...\n");
+    exit(1);
+  }
   // reset beam data
   init_maw(&(md->aw));
   read_data_maw(&(md->aw));   
@@ -448,32 +612,94 @@ void dat_read2(char *fname,DMDA *md)
   // BOUD
   malloc_node(&(md->bd)); // malloc
   malloc_elem(&(md->bd)); // malloc
-  for(i=0;i<=md->bd.Nn;i++) fread(md->bd.rn[i],sizeof(double),3,fp);
-  for(i=0;i<=md->bd.Ne;i++) fread(md->bd.ed[i],sizeof(int),4,fp);
-  for(i=0;i<=md->bd.Ne;i++) fread(md->bd.eni[i],sizeof(int),4,fp);
-  fread(md->bd.md,sizeof(int),md->bd.Ne+1,fp);
-  fread(md->bd.sd,sizeof(int),md->bd.Ne+1,fp);
-  fread(md->bd.gd,sizeof(int),md->bd.Ne+1,fp);
-  for(i=0;i<=md->bd.Ne;i++) for(j=0;j<4;j++) fread(md->bd.ren[i][j],sizeof(double),3,fp);
-  for(i=0;i<=md->bd.Ne;i++) for(j=0;j<4;j++) fread(md->bd.wen[i][j],sizeof(double),3,fp);
+  for(i=0;i<=md->bd.Nn;i++){
+    if(fread(md->bd.rn[i],sizeof(double),3,fp)!=3){
+      printf("bem3_aw_b2.c, dat_read2(), failed to read the rn[i]. exit...\n");
+      exit(1);
+    }
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    if(fread(md->bd.ed[i],sizeof(int),4,fp)!=4){
+      printf("bem3_aw_b2.c, dat_read2(), failed to read the ed[i]. exit...\n");
+      exit(1);
+    }
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    if(fread(md->bd.eni[i],sizeof(int),4,fp)!=4){
+      printf("bem3_aw_b2.c, dat_read2(), failed to read the eni[i]. exit...\n");
+      exit(1);
+    }
+  }
+  if(fread(md->bd.md,sizeof(int),md->bd.Ne+1,fp)!=md->bd.Ne+1){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the md. exit...\n");
+    exit(1);
+  }
+  if(fread(md->bd.sd,sizeof(int),md->bd.Ne+1,fp)!=md->bd.Ne+1){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the sd. exit...\n");
+    exit(1);
+  }
+  if(fread(md->bd.gd,sizeof(int),md->bd.Ne+1,fp)!=md->bd.Ne+1){
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the gd. exit...\n");
+    exit(1);
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    for(j=0;j<4;j++){
+      if(fread(md->bd.ren[i][j],sizeof(double),3,fp)!=3){
+        printf("bem3_aw_b2.c, dat_read2(), failed to read the ren[i][j]. exit...\n");
+        exit(1);
+      }
+    }
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    for(j=0;j<4;j++){
+      if(fread(md->bd.wen[i][j],sizeof(double),3,fp)!=3){
+        printf("bem3_aw_b2.c, dat_read2(), failed to read the wen[i][j]. exit...\n");
+        exit(1);
+      }
+    }
+  }
   // sub domain data
   malloc_sub_domain(md); // malloc
   for(d=0;d<=md->MN;d++){
-    fread(&tmp,sizeof(int),1,fp);
-    fread(md->bd.sb[d].sid,sizeof(int),md->bd.sb[d].Ne+1,fp);
+    if(fread(&tmp,sizeof(int),1,fp)!=1){
+      printf("bem3_aw_b2.c, dat_read2(), failed to read the tmp. exit...\n");
+      exit(1);
+    }
+    if(fread(md->bd.sb[d].sid,sizeof(int),md->bd.sb[d].Ne+1,fp)!=md->bd.sb[d].Ne+1){
+      printf("bem3_aw_b2.c, dat_read2(), failed to read the md. exit...\n");
+      exit(1);
+    }
   }
   // coefficient matrix data
   md->cm.MN=md->MN;
   md->cm.na=2*md->bd.NN;
   initalize_cmd2(&(md->cm));
   for(i=0;i<=md->MN;i++){
-    fread(md->cm.tgfn[i],sizeof(char),128,fp); // G
-    fread(md->cm.thfn[i],sizeof(char),128,fp); // H
-    fread(md->cm.tdgfn[i],sizeof(char),128,fp); // dG
-    fread(md->cm.tdhfn[i],sizeof(char),128,fp); // dH
-    fread(md->cm.tdffn[i],sizeof(char),128,fp); // dF
+    if(fread(md->cm.tgfn[i],sizeof(char),128,fp)!=128){ // G
+      printf("bem3_aw_b2.c, dat_read2(), failed to read the tgfn[i]. exit...\n");
+      exit(1);
+    }
+    if(fread(md->cm.thfn[i],sizeof(char),128,fp)!=128){ // H
+      printf("bem3_aw_b2.c, dat_read2(), failed to read the thfn[i]. exit...\n");
+      exit(1);
+    }
+    if(fread(md->cm.tdgfn[i],sizeof(char),128,fp)!=128){ // dG
+      printf("bem3_aw_b2.c, dat_read2(), failed to read the tdgfn[i]. exit...\n");
+      exit(1);
+    }
+    if(fread(md->cm.tdhfn[i],sizeof(char),128,fp)!=128){ // dH
+      printf("bem3_aw_b2.c, dat_read2(), failed to read the tdhfn[i]. exit...\n");
+      exit(1);
+    }
+    if(fread(md->cm.tdffn[i],sizeof(char),128,fp)!=128){ // dF
+      printf("bem3_aw_b2.c, dat_read2(), failed to read the tdffn[i]. exit...\n");
+      exit(1);
+    }
   }
-  fread(md->cm.lupfn,sizeof(char),128,fp); // LU + pivot
+  if(fread(md->cm.lupfn,sizeof(char),128,fp)!=128){ // LU + pivot
+    printf("bem3_aw_b2.c, dat_read2(), failed to read the lupfn. exit...\n");
+    exit(1);
+  }
 
   fclose(fp);
 }

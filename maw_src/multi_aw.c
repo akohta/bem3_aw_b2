@@ -80,11 +80,38 @@ int read_data_maw_pw(char *fname,Maw *aw)
   if((fp=fopen(fname,"rt"))==NULL) return 0;
   sprintf(aw->fname_pw,"%s",fname);   
   
-  fgets(buf,256,fp);  fgets(buf,256,fp);
-  fscanf(fp,"%lf",&rho0);
-  fscanf(fp,"%lf",&c0);
-  fscanf(fp,"%lf\n",&f);  fgets(buf,256,fp);
-  fscanf(fp,"%d\n",&nn);  fgets(buf,256,fp);
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_pw(), failed to read the line. exit...\n");
+    exit(1);  
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_pw(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&rho0)!=1){
+    printf("multi_aw.c, read_data_maw_pw(), failed to read the rho0. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&c0)!=1){
+    printf("multi_aw.c, read_data_maw_pw(), failed to read the c0. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf\n",&f)!=1){
+    printf("multi_aw.c, read_data_maw_pw(), failed to read the f. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_pw(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%d\n",&nn)!=1){
+    printf("multi_aw.c, read_data_maw_pw(), failed to read the nn. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_pw(), failed to read the line. exit...\n");
+    exit(1);
+  }
   if(nn==0) return 0;
 
   free(aw->bd.pw);
@@ -94,13 +121,40 @@ int read_data_maw_pw(char *fname,Maw *aw)
     aw->bd.pw[i].rho0=rho0;
     aw->bd.pw[i].c0=c0;
     aw->bd.pw[i].f=f;
-    fscanf(fp,"%lf",&td1);
-    fscanf(fp,"%lf",&td2);    aw->bd.pw[i].p=td1+I*td2;
-    fscanf(fp,"%lf",&td1);    aw->bd.pw[i].tv[0]=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.pw[i].tv[1]=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.pw[i].tv[2]=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.pw[i].theta=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.pw[i].psi  =td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_pw(), failed to read the real(p). exit...\n");
+      exit(1);
+    }
+    if(fscanf(fp,"%lf",&td2)!=1){
+      printf("multi_aw.c, read_data_maw_pw(), failed to read the imag(p). exit...\n");
+      exit(1);
+    }
+    aw->bd.pw[i].p=td1+I*td2;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_pw(), failed to read the tv[0]. exit...\n");
+      exit(1);
+    }
+    aw->bd.pw[i].tv[0]=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_pw(), failed to read the tv[1]. exit...\n");
+      exit(1);
+    }
+    aw->bd.pw[i].tv[1]=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_pw(), failed to read the tv[2]. exit...\n");
+      exit(1);
+    }
+    aw->bd.pw[i].tv[2]=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_pw(), failed to read the theta. exit...\n");
+      exit(1); 
+    }
+    aw->bd.pw[i].theta=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_pw(), failed to read the psi. exit...\n");
+      exit(1);
+    }
+    aw->bd.pw[i].psi  =td1;
   }
   fclose(fp);
   return nn;
@@ -114,11 +168,38 @@ int read_data_maw_bb(char *fname,Maw *aw)
   if((fp=fopen(fname,"rt"))==NULL) return 0;
   sprintf(aw->fname_bb,"%s",fname);   
   
-  fgets(buf,256,fp);  fgets(buf,256,fp);
-  fscanf(fp,"%lf",&rho0);
-  fscanf(fp,"%lf",&c0);
-  fscanf(fp,"%lf\n",&f);  fgets(buf,256,fp);
-  fscanf(fp,"%d\n",&nn);  fgets(buf,256,fp);
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_bb(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_bb(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&rho0)!=1){
+    printf("multi_aw.c, read_data_maw_bb(), failed to read the rho0. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&c0)!=1){
+    printf("multi_aw.c, read_data_maw_bb(), failed to read the c0. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf\n",&f)!=1){
+    printf("multi_aw.c, read_data_maw_bb(), failed to read the f. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_bb(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%d\n",&nn)!=1){
+    printf("multi_aw.c, read_data_maw_bb(), failed to read the nn. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_bb(), failed to read the line. exit...\n");
+    exit(1);
+  }
   if(nn==0) return 0;
 
   free(aw->bd.bb);
@@ -128,14 +209,45 @@ int read_data_maw_bb(char *fname,Maw *aw)
     aw->bd.bb[i].rho0=rho0;
     aw->bd.bb[i].c0  =c0;
     aw->bd.bb[i].f   =f;
-    fscanf(fp,"%lf",&td1);
-    fscanf(fp,"%lf",&td2);    aw->bd.bb[i].p=td1+I*td2;
-    fscanf(fp,"%lf",&td1);    aw->bd.bb[i].d_angle=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.bb[i].tv[0]=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.bb[i].tv[1]=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.bb[i].tv[2]=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.bb[i].theta=td1;
-    fscanf(fp,"%lf\n",&td1);  aw->bd.bb[i].psi  =td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_bb(), failed to read the real(p). exit...\n");
+      exit(1);
+    }
+    if(fscanf(fp,"%lf",&td2)!=1){
+      printf("multi_aw.c, read_data_maw_bb(), failed to read the imag(p). exit...\n");
+      exit(1);
+    }
+    aw->bd.bb[i].p=td1+I*td2;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_bb(), failed to read the d_angle. exit...\n");
+      exit(1);
+    }
+    aw->bd.bb[i].d_angle=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_bb(), failed to read the tv[0]. exit...\n");
+      exit(1);
+    }
+    aw->bd.bb[i].tv[0]=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_bb(), failed to read the tv[1]. exit...\n");
+      exit(1);
+    }
+    aw->bd.bb[i].tv[1]=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_bb(), failed to read the tv[2]. exit...\n");
+      exit(1);
+    }
+    aw->bd.bb[i].tv[2]=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_bb(), failed to read the theta. exit...\n");
+      exit(1);
+    }
+    aw->bd.bb[i].theta=td1;
+    if(fscanf(fp,"%lf\n",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_bb(), failed to read the psi. exit...\n");
+      exit(1);
+    }
+    aw->bd.bb[i].psi  =td1;
   }
   fclose(fp);
   return nn;
@@ -149,11 +261,38 @@ int read_data_maw_fb(char *fname,Maw *aw)
   if((fp=fopen(fname,"rt"))==NULL) return 0;
   sprintf(aw->fname_fb,"%s",fname);   
   
-  fgets(buf,256,fp);  fgets(buf,256,fp);
-  fscanf(fp,"%lf",&rho0);
-  fscanf(fp,"%lf",&c0);
-  fscanf(fp,"%lf\n",&f);  fgets(buf,256,fp);
-  fscanf(fp,"%d\n",&nn);  fgets(buf,256,fp);
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_fb(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_fb(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&rho0)!=1){
+    printf("multi_aw.c, read_data_maw_fb(), failed to read the rho0. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&c0)!=1){
+    printf("multi_aw.c, read_data_maw_fb(), failed to read the c0. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf\n",&f)!=1){
+    printf("multi_aw.c, read_data_maw_fb(), failed to read the f. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_fb(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%d\n",&nn)!=1){
+    printf("multi_aw.c, read_data_maw_fb(), failed to read the nn. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("multi_aw.c, read_data_maw_fb(), failed to read the line. exit...\n");
+    exit(1);
+  }
   if(nn==0) return 0;
 
   free(aw->bd.fb);
@@ -163,16 +302,55 @@ int read_data_maw_fb(char *fname,Maw *aw)
     aw->bd.fb[i].rho0=rho0;
     aw->bd.fb[i].c0  =c0;
     aw->bd.fb[i].f   =f;
-    fscanf(fp,"%lf",&td1);
-    fscanf(fp,"%lf",&td2);    aw->bd.fb[i].p=td1+I*td2;
-    fscanf(fp,"%lf",&td1);    aw->bd.fb[i].B=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.fb[i].F=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.fb[i].tv[0]=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.fb[i].tv[1]=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.fb[i].tv[2]=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.fb[i].theta=td1;
-    fscanf(fp,"%lf",&td1);    aw->bd.fb[i].psi  =td1;
-    fscanf(fp,"%d\n",&ti);    aw->bd.fb[i].nn=ti;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_fb(), failed to read the real(p). exit...\n");
+      exit(1);
+    }
+    if(fscanf(fp,"%lf",&td2)!=1){
+      printf("multi_aw.c, read_data_maw_fb(), failed to read the imag(p). exit...\n");
+      exit(1);
+    }
+    aw->bd.fb[i].p=td1+I*td2;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_fb(), failed to read the B. exit...\n");
+      exit(1);
+    }
+    aw->bd.fb[i].B=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_fb(), failed to read the F. exit...\n");
+      exit(1);
+    }
+    aw->bd.fb[i].F=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_fb(), failed to read the tv[0]. exit...\n");
+      exit(1);
+    }
+    aw->bd.fb[i].tv[0]=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_fb(), failed to read the tv[1]. exit...\n");
+      exit(1);  
+    }
+    aw->bd.fb[i].tv[1]=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_fb(), failed to read the tv[2]. exit...\n");
+      exit(1);
+    }
+    aw->bd.fb[i].tv[2]=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_fb(), failed to read the theta. exit...\n");
+      exit(1);
+    }
+    aw->bd.fb[i].theta=td1;
+    if(fscanf(fp,"%lf",&td1)!=1){
+      printf("multi_aw.c, read_data_maw_fb(), failed to read the psi. exit...\n");
+      exit(1);
+    }
+    aw->bd.fb[i].psi  =td1;
+    if(fscanf(fp,"%d\n",&ti)!=1){
+      printf("multi_aw.c, read_data_maw_fb(), failed to read the nn. exit...\n");
+      exit(1);
+    }
+    aw->bd.fb[i].nn=ti;
   }
   fclose(fp);
   return nn;
