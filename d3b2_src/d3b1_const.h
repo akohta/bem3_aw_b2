@@ -39,7 +39,7 @@
 #define I_SPSQ3 3.062938307898844719507e-2 // 1.0/(6.0*M_PI*sqrt(3.0))
 
 // gmsh setting
-#define MSHVER  2.2 // version number : 2.2 later
+#define MSHVER  2.2 // version number 
 #define MSHASCI 0   // file type is ascii
 #define MSHPREC 8   // data size(precision), 8 = sizeof(double)
 #define ELT3    2   // element type : 3-node triangle ( linear triangular element )

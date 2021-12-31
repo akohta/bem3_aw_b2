@@ -9,7 +9,7 @@ The acoustic wave analysis program "multi_aw" is used for analyze incident field
 
 ## Usage of example code  
 1. type 'make' command to compile.  
-   The executable aw_d3b2_create_matrix, aw_d3b2_bv_solver, example1.out, example2.out, example3.out are created. 
+   The executable aw_d3b2_create_matrix, aw_d3b2_bv_solver, example1.out, example2.out, example3.out, example4.out are created. 
    The executable aw_d3b2_create_matrix is the solver of boundary integral equations, it outputs coefficient matrices and its inverse matrices. 
    The executable aw_d3b2_bv_solver is the sovler for boundary value, it analyzes multiple scattering using iterative solution when defined multiple objects. 
    The example1.out is the executable of source code example1.c, it shows a simplest example using "bem3_aw_b2". 
@@ -56,6 +56,12 @@ The acoustic wave analysis program "multi_aw" is used for analyze incident field
    The range of color bar in each cross section is output to the info.txt file (ex. xy_info.txt for z=0 plane). 
    The xz_p.gif, yz_p.gif and xy_p.gif are animated gifs that concatenate the png files created by using the shell script gif_animation.sh.  
    
+7. type './example4.out' with an argument of datafile name output by aw_d3b2_bv_solver.  
+   For example, './example4.out ex.dat'. 
+   This executable calculates scattered field (sound puressure) intensity distributions in far-field and outputs them to text files. 
+   The I_example4.png is the visualization result of the intensity distributions, created by gnuplot script gscript_example4.plt. 
+   The I_example4_3d.png is the visualization result of the intensity distributions on a spherical surface, created by gnuplot script gscript_example4_3d.plt.
+
 Please see d3b2_src/bem3_aw_b2.h for detail of functions. 
 The main parts of the code are parallelized by using OpenMP. 
 The number of threads is controlled by the environment variable OMP_NUM_THREADS.
@@ -64,7 +70,7 @@ The number of threads is controlled by the environment variable OMP_NUM_THREADS.
 ![objects](particles.png "nodes for surface integral (particles.png)")  
 ![intensity](I_example2.png "intensity distributions (I_example2.png)")  
 ![xz_p.gif](xz_p.gif "instantaneous value of the p on y=0 plane (xz_p.gif)")![xy_p.gif](xy_p.gif "instantaneous value of the p on z=0 plane (xy_p.gif)")  
-
+![far-field](I_example4_3d.png "far-field intensity distribution (I_example4_3d.png)")  
 
 ## Analysis sample 2 (in the folder analysis_sample2)  
 
@@ -91,7 +97,7 @@ I recommend using quadrangular element for reduce required memory.
 The samples of mesh data are in the folder mesh_sample. 
 The file with extension .geo is the Gmsh geometry file. 
 The file with extension .msh is the mesh file created by using Gmsh geometry file. 
-These mesh files are created by the command 'gmsh -2 -tol 1.0e-15 xxxx.geo' in command line (xxxx.geo is a geometry file). 
+These mesh files are created by the command 'gmsh -2 -tol 1.0e-15 -format msh2 xxxx.geo' in command line (xxxx.geo is a geometry file). 
 The domain number (Physical Surface) 99 is assigned to the open region in Gmsh geometry file, 
 because Gmsh can't use the number 0 (assigned to open region in the code). 
 Please refer to the manual of Gmsh for detail of geometry file.

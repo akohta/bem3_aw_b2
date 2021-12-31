@@ -112,6 +112,9 @@ void mo_solve_iter(MOBJ *mo)
 
     time(&end);
     printf("finished. Elapsed time : %5g (sec)\n",difftime(end,start));
+    if(iter==itermax){
+      printf("The number of iterations has reached the upper limit. The solution has not converged.\n");
+    } 
   }
 }
 

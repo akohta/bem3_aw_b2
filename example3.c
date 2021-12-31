@@ -39,16 +39,34 @@ int main(int argc,char *argv[])
 {
   MOBJ ad;
   IMD id;
+  double mf;
+  int sn,ty;
+  
+  if(argc!=2 && argc!=5){
+    printf("Usage : %s datafile_name [sampling_number multplier_factor type](optional)\n",argv[0]);
+    printf("default sampling number 180, multiplier factor 3 (range is -3*lambda0 to 3*lambda0), type 1 (9 or 7 point GaussLegendre)\n");
+    exit(0);
+  }
+  else if(argc==5){
+    sn=atoi(argv[2]);
+    mf=atof(argv[3]);
+    ty=atoi(argv[4]);
+  }
+  else{
+    sn=180;
+    mf=3.0;
+    ty=1;
+  }
 
   mo_dat_read(argv[1],&ad); // read datafile 
   mo_print_data(&ad);       // print data 
   
   directory_name(argv[1],id.dir_name); // remove file-extension from argv[1] and add "_images"
   id.scale=1;                          // number for enlarge the output image
-  id.m=180;                            // sampling number 
-  id.rang=3.0*ad.md[0].aw.lambda0;     // range of sampling
+  id.m=sn;                             // sampling number 
+  id.rang=mf*ad.md[0].aw.lambda0;      // range of sampling
   id.ts=40;                            // time step per cycle
-  id.type=0;                           // type setting for total_field_amsp()
+  id.type=ty;                          // type setting 
   
   make_directory(id.dir_name);
 

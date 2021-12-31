@@ -1,7 +1,7 @@
 # Gnuplot script file
 # Usage : gnuplot -e 'file="particles_filename"' gscript_particles.plt
 
-if ( !exists("file") ) file="ex.particles"
+if ( !exists("file") ) file="ex2.particles"
 
 set terminal postscript eps color enhanced "Arial" 20 size 6in,8in
 set output "particles.eps"
@@ -23,5 +23,5 @@ set xtics 0.01
 set ylabel "{/Arial-Italic y}" 
 set ytics 0.01
 set zlabel "{/Arial-Italic z}"
-
+set ztics 0.005
 splot for[i=0:*] file using 1:2:3:(($4==i)? $4 : 1/0) pt 7 palette title sprintf("object %d",i)
